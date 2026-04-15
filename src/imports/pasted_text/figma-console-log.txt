@@ -1,0 +1,165 @@
+VM13088 Website-Login-Page-Design:4 Running frontend commit 9ddb06e97df71e299d0733644813b89ea0600aa2
+vendor-core-83c17265f2588e9e.min.js.br:54 Statsig is not ready to log exposures, will retry in 1 seconds
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:54Understand this warning
+(index):1  Failed to load resource: net::ERR_FAILEDUnderstand this error
+vendor-core-83c17265f2588e9e.min.js.br:54 [import] git: 6d6488cf7900780e0f129247681c41597b7063db, stamp: 9A62C9024417C038
+vendor-core-83c17265f2588e9e.min.js.br:54 Autosave Changes not available or already claimed by another tab undefined
+9697-6280fcd4741a436e.min.js.br:7 The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127
+initialize @ 9697-6280fcd4741a436e.min.js.br:7Understand this warning
+vendor-core-83c17265f2588e9e.min.js.br:54 [Fullscreen] Booting... (emscripten version 4.0.21)
+vendor-core-83c17265f2588e9e.min.js.br:54 [GPU] graphicsAPI:"WebGPU", vendor:"Google Inc. (Intel)" renderer:"ANGLE (Intel, Intel(R) UHD Graphics (0x0000A788) Direct3D11 vs_5_0 ps_5_0, D3D11)" deviceArchitecture:"gen-12lp" deviceDescription:"" webGPUDevice:"" webGPUVendor:"intel" bindings:"emdawnwebgpu"
+vendor-core-83c17265f2588e9e.min.js.br:54 [Fullscreen] Ready in 260.5ms
+vendor-core-83c17265f2588e9e.min.js.br:54 [FullscreenApp] calling setEditorTheme and setting preference dark
+vendor-core-83c17265f2588e9e.min.js.br:54 [MultiplayerSession] connecting to wss://www.figma.com/api/multiplayer/9RSD8teKI3JaPYKUgieRdm?role=editor&tracking_session_id=OVIv9AxWhdJMLtOb&version=151&recentReload=0&file-load-streaming-compression&user-id=1555806856080962325&client_release=9ddb06e97df71e299d0733644813b89ea0600aa2
+vendor-core-83c17265f2588e9e.min.js.br:54 [FullscreenApp] calling setEditorTheme and setting preference dark
+vendor-core-83c17265f2588e9e.min.js.br:54 Loaded 40 scripts (6298463b), 40 from cache (6298463b)
+Website-Login-Page-Design?t=A728RquQ19iPYtRt-0&fullscreen=1:1 Access to fetch at 'https://errors.figma.com/api/sentry/api/56203/envelope/?sentry_key=d1b12a8fbe424e4b956eb33cadd5b30d&sentry_version=7&sentry_client=sentry.javascript.browser%2F8.40.0' from origin 'https://www.figma.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.Understand this error
+errors.figma.com/api/sentry/api/56203/envelope/?sentry_key=d1b12a8fbe424e4b956eb33cadd5b30d&sentry_version=7&sentry_client=sentry.javascript.browser%2F8.40.0:1  Failed to load resource: net::ERR_FAILEDUnderstand this error
+vendor-core-83c17265f2588e9e.min.js.br:54 [MultiplayerSession] Joining file version 106 (initial load)
+vendor-core-83c17265f2588e9e.min.js.br:54 Migration succeeded: context: fullscreen_migrate_SceneGraphManager, version: 106, duration: 0ms.
+vendor-core-83c17265f2588e9e.min.js.br:63  GET https://www.figma.com/api/plans/40b3d5ea-c20a-4840-9acc-39f86178dded/npm_private_registry/scopes 403 (Forbidden)
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:63
+(anonymous) @ 8638-d4ddfd6adcb660b4.min.js.br:1403
+T @ 8638-d4ddfd6adcb660b4.min.js.br:1403
+await in T
+w @ 8638-d4ddfd6adcb660b4.min.js.br:1403
+k @ 8638-d4ddfd6adcb660b4.min.js.br:1403
+(anonymous) @ 8638-d4ddfd6adcb660b4.min.js.br:1098
+validate @ figma_app-0b95bcf863cbf27b.min.js.br:247
+listPlanNpmPrivateRegistryScopes @ 8638-d4ddfd6adcb660b4.min.js.br:1098
+(anonymous) @ 8638-d4ddfd6adcb660b4.min.js.br:78
+(anonymous) @ 8638-d4ddfd6adcb660b4.min.js.br:78
+aB @ vendor-core-83c17265f2588e9e.min.js.br:11
+oD @ vendor-core-83c17265f2588e9e.min.js.br:11
+oL @ vendor-core-83c17265f2588e9e.min.js.br:11
+f5 @ vendor-core-83c17265f2588e9e.min.js.br:11
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:11
+oB @ vendor-core-83c17265f2588e9e.min.js.br:11
+oE @ vendor-core-83c17265f2588e9e.min.js.br:11
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:54
+S @ vendor-core-83c17265f2588e9e.min.js.br:54
+O @ vendor-core-83c17265f2588e9e.min.js.br:54Understand this error
+vendor-core-83c17265f2588e9e.min.js.br:54 [devtools] Initialized LS
+vendor-core-83c17265f2588e9e.min.js.br:54 [Fullscreen] loadtime=6.02s maxmem=23559072
+vendor-core-83c17265f2588e9e.min.js.br:54 [devtools] Initialized LS
+vendor-core-83c17265f2588e9e.min.js.br:63  GET https://www.figma.com/api/make/9RSD8teKI3JaPYKUgieRdm/cached_preview_urls?source_code_hash=0e8e1e2d158b9142d8f44638bb1ef69e44a841ed 404 (Not Found)
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:63
+(anonymous) @ 8638-d4ddfd6adcb660b4.min.js.br:1403
+T @ 8638-d4ddfd6adcb660b4.min.js.br:1403
+await in T
+w @ 8638-d4ddfd6adcb660b4.min.js.br:1403
+k @ 8638-d4ddfd6adcb660b4.min.js.br:1403
+(anonymous) @ 8586-7e729fbc9f71e659.min.js.br:64
+validate @ figma_app-0b95bcf863cbf27b.min.js.br:247
+getCachedPreviewUrls @ 8586-7e729fbc9f71e659.min.js.br:64
+(anonymous) @ figma_app-0b95bcf863cbf27b.min.js.br:397
+push.839582.constructor.preloadCachedPreviewUrls @ figma_app-0b95bcf863cbf27b.min.js.br:397
+push.839582.constructor.initializeCode @ figma_app-0b95bcf863cbf27b.min.js.br:397
+(anonymous) @ 940032c6-8a4f433c8d44c800.min.js.br:3
+aB @ vendor-core-83c17265f2588e9e.min.js.br:11
+oD @ vendor-core-83c17265f2588e9e.min.js.br:11
+oL @ vendor-core-83c17265f2588e9e.min.js.br:11
+f5 @ vendor-core-83c17265f2588e9e.min.js.br:11
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:11
+oB @ vendor-core-83c17265f2588e9e.min.js.br:11
+oE @ vendor-core-83c17265f2588e9e.min.js.br:11
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:54
+S @ vendor-core-83c17265f2588e9e.min.js.br:54
+O @ vendor-core-83c17265f2588e9e.min.js.br:54Understand this error
+/make/9RSD8teKI3JaPYKUgieRdm/Website-Login-Page-Design?p=f&t=A728RquQ19iPYtRt-0&fullscreen=1:1 Access to fetch at 'https://errors.figma.com/api/sentry/api/56203/envelope/?sentry_key=d1b12a8fbe424e4b956eb33cadd5b30d&sentry_version=7&sentry_client=sentry.javascript.browser%2F8.40.0' from origin 'https://www.figma.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.Understand this error
+vendor-core-83c17265f2588e9e.min.js.br:63  POST https://errors.figma.com/api/sentry/api/56203/envelope/?sentry_key=d1b12a8fbe424e4b956eb33cadd5b30d&sentry_version=7&sentry_client=sentry.javascript.browser%2F8.40.0 net::ERR_FAILED 413 (Content Too Large)
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:63
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:63
+add @ vendor-core-83c17265f2588e9e.min.js.br:63
+send @ vendor-core-83c17265f2588e9e.min.js.br:63
+s @ vendor-core-83c17265f2588e9e.min.js.br:63
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:63
+await in (anonymous)
+u @ vendor-core-83c17265f2588e9e.min.js.br:54
+setTimeout
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:63
+l @ vendor-core-83c17265f2588e9e.min.js.br:63
+d @ vendor-core-83c17265f2588e9e.min.js.br:63
+s @ vendor-core-83c17265f2588e9e.min.js.br:63Understand this error
+/make/9RSD8teKI3JaPYKUgieRdm/Website-Login-Page-Design?p=f&t=A728RquQ19iPYtRt-0&fullscreen=1:1 Access to fetch at 'https://errors.figma.com/api/sentry/api/56203/envelope/?sentry_key=d1b12a8fbe424e4b956eb33cadd5b30d&sentry_version=7&sentry_client=sentry.javascript.browser%2F8.40.0' from origin 'https://www.figma.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.Understand this error
+vendor-core-83c17265f2588e9e.min.js.br:63  POST https://errors.figma.com/api/sentry/api/56203/envelope/?sentry_key=d1b12a8fbe424e4b956eb33cadd5b30d&sentry_version=7&sentry_client=sentry.javascript.browser%2F8.40.0 net::ERR_FAILED 413 (Content Too Large)
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:63
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:63
+add @ vendor-core-83c17265f2588e9e.min.js.br:63
+send @ vendor-core-83c17265f2588e9e.min.js.br:63
+s @ vendor-core-83c17265f2588e9e.min.js.br:63
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:63
+await in (anonymous)
+u @ vendor-core-83c17265f2588e9e.min.js.br:54
+setTimeout
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:63
+l @ vendor-core-83c17265f2588e9e.min.js.br:63
+d @ vendor-core-83c17265f2588e9e.min.js.br:63
+s @ vendor-core-83c17265f2588e9e.min.js.br:63
+await in s
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:63
+await in (anonymous)
+u @ vendor-core-83c17265f2588e9e.min.js.br:54Understand this error
+/make/9RSD8teKI3JaPYKUgieRdm/Website-Login-Page-Design?p=f&t=A728RquQ19iPYtRt-0&fullscreen=1:1 Access to fetch at 'https://errors.figma.com/api/sentry/api/56203/envelope/?sentry_key=d1b12a8fbe424e4b956eb33cadd5b30d&sentry_version=7&sentry_client=sentry.javascript.browser%2F8.40.0' from origin 'https://www.figma.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.Understand this error
+vendor-core-83c17265f2588e9e.min.js.br:63  POST https://errors.figma.com/api/sentry/api/56203/envelope/?sentry_key=d1b12a8fbe424e4b956eb33cadd5b30d&sentry_version=7&sentry_client=sentry.javascript.browser%2F8.40.0 net::ERR_FAILED 413 (Content Too Large)
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:63
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:63
+add @ vendor-core-83c17265f2588e9e.min.js.br:63
+send @ vendor-core-83c17265f2588e9e.min.js.br:63
+s @ vendor-core-83c17265f2588e9e.min.js.br:63
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:63
+await in (anonymous)
+u @ vendor-core-83c17265f2588e9e.min.js.br:54
+setTimeout
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:63
+l @ vendor-core-83c17265f2588e9e.min.js.br:63
+d @ vendor-core-83c17265f2588e9e.min.js.br:63
+s @ vendor-core-83c17265f2588e9e.min.js.br:63
+await in s
+(anonymous) @ vendor-core-83c17265f2588e9e.min.js.br:63
+await in (anonymous)
+u @ vendor-core-83c17265f2588e9e.min.js.br:54Understand this error
+code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:90 🔵 Sending signup request to backend...
+code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:90 📝 Email: magma182004@gmail.com
+code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:90 📝 Full Name: magma
+login-form.tsx:71  POST https://kbhvaqufqmxymtachcxy.supabase.co/functions/v1/make-server-423c8049/auth/signup 401 (Unauthorized)
+handleSubmit @ login-form.tsx:71
+y @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:25
+ik @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:25
+iz @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:25
+i$ @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:25
+dP @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:37
+dM @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:37
+dG @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:37
+dk @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:37
+(anonymous) @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:37
+SR @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:37
+iR @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:25
+dj @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:37
+lN @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:25
+lO @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:25
+lv @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:25Understand this error
+code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:90 📡 Signup response status: 401
+code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:90 📡 Signup response data: {code: 401, message: 'Missing authorization header'}
+code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:17 ❌ Signup failed: {code: 401, message: 'Missing authorization header'}
+r @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:17
+error @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:90
+handleSubmit @ login-form.tsx:89
+await in handleSubmit
+y @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:25
+ik @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:25
+iz @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:25
+i$ @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:25
+dP @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:37
+dM @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:37
+dG @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:37
+dk @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:37
+(anonymous) @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:37
+SR @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:37
+iR @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:25
+dj @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:37
+lN @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:25
+lO @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:25
+lv @ code_components_preview_iframe-eaba1e85cf12e64b.min.js.br:25Understand this error
+/make/9RSD8teKI3JaPYKUgieRdm/Website-Login-Page-Design?p=f&t=A728RquQ19iPYtRt-0&fullscreen=1:1 Access to fetch at 'https://errors.figma.com/api/sentry/api/56203/envelope/?sentry_key=d1b12a8fbe424e4b956eb33cadd5b30d&sentry_version=7&sentry_client=sentry.javascript.browser%2F8.40.0' from origin 'https://www.figma.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.Understand this error
+vendor-core-83c17265f2588e9e.min.js.br:63  POST https://errors.figma.com/api/sentry/api/56203/envelope/?sentry_key=d1b12a8fbe424e4b956eb33cadd5b30d&sentry_version=7&sentry_client=sentry.javascript.browser%2F8.40.0 net::ERR_FAILED 413 (Content Too Large)
