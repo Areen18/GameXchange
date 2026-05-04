@@ -1043,19 +1043,29 @@ app.use((error, _req, res, _next) => {
   res.status(500).json({ error: "Internal server error" });
 });
 
-await bootstrapDatabase();
+// Database will be initialized by middleware below
 
-const server = app.listen(port, () => {
-  console.log(`GameXchange API running on http://localhost:${port}`);
+
+
+app.use((error, _req, res, _next) => {
+  console.error(error);
+  res.status(500).json({ error: "Internal server error" });
 });
 
-async function shutdown(signal) {
-  console.log(`\nReceived ${signal}. Shutting down cleanly...`);
-  server.close(async () => {
-    await pool.end();
-    process.exit(0);
-  });
+// Initialize database on cold start
+let dbInitialized = false;
+async function ensureDatabase() {
+  if (!dbInitialized) {
+    await bootstrapDatabase();
+    dbInitialized = true;
+  }
 }
 
-process.on("SIGINT", () => void shutdown("SIGINT"));
-process.on("SIGTERM", () => void shutdown("SIGTERM"));
+// Ensure database is initialized before handling requests
+app.use(async (_req, _res, next) => {
+  await ensureDatabase();
+  next();
+});
+
+// Export for Vercel serverless
+export default app;

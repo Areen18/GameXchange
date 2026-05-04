@@ -58,14 +58,27 @@ export async function bootstrapDatabase() {
       negotiable BOOLEAN NOT NULL DEFAULT FALSE,
       description TEXT NOT NULL DEFAULT '',
       image_url TEXT,
-      delivery_email TEXT NOT NULL,
-      delivery_password TEXT NOT NULL,
-      delivery_code TEXT NOT NULL,
+      delivery_email TEXT,
+      delivery_password TEXT,
+      delivery_code TEXT,
+      payment_qr_code TEXT,
+      payment_upi_id TEXT,
+      payment_instructions TEXT,
       status TEXT NOT NULL DEFAULT 'active',
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `);
+
+  // Add payment fields to existing accounts table
+  await query(`ALTER TABLE accounts ADD COLUMN IF NOT EXISTS payment_qr_code TEXT;`);
+  await query(`ALTER TABLE accounts ADD COLUMN IF NOT EXISTS payment_upi_id TEXT;`);
+  await query(`ALTER TABLE accounts ADD COLUMN IF NOT EXISTS payment_instructions TEXT;`);
+  
+  // Make delivery fields nullable for existing tables
+  await query(`ALTER TABLE accounts ALTER COLUMN delivery_email DROP NOT NULL;`);
+  await query(`ALTER TABLE accounts ALTER COLUMN delivery_password DROP NOT NULL;`);
+  await query(`ALTER TABLE accounts ALTER COLUMN delivery_code DROP NOT NULL;`);
 
   await query(`
     CREATE TABLE IF NOT EXISTS trades (
@@ -77,28 +90,39 @@ export async function bootstrapDatabase() {
       platform_fee INTEGER NOT NULL,
       total_amount INTEGER NOT NULL,
       status TEXT NOT NULL DEFAULT 'pending_payment',
-      payment_status TEXT NOT NULL DEFAULT 'pending',
-      payment_method TEXT,
-      payment_id TEXT,
-      payment_order_id TEXT,
-      payment_signature TEXT,
-      account_email TEXT,
-      account_password TEXT,
-      security_code TEXT,
+      
+      -- Manual Payment Fields
+      payment_qr_code TEXT,
+      payment_upi_id TEXT,
+      payment_instructions TEXT,
+      payment_reported_at TIMESTAMPTZ,
+      payment_reported_by TEXT,
+      
+      -- Riot Credentials (Plain text for manual system)
+      riot_id TEXT,
+      riot_password TEXT,
+      credentials_submitted_at TIMESTAMPTZ,
+      
+      -- Tracking
+      seller_notified_at TIMESTAMPTZ,
+      buyer_confirmed_at TIMESTAMPTZ,
+      
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `);
 
-  // Upgrade older trade schema used before payment persistence was added.
-  await query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS payment_status TEXT NOT NULL DEFAULT 'pending';`);
-  await query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS payment_method TEXT;`);
-  await query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS payment_id TEXT;`);
-  await query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS payment_order_id TEXT;`);
-  await query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS payment_signature TEXT;`);
-  await query(`ALTER TABLE trades ALTER COLUMN account_email DROP NOT NULL;`);
-  await query(`ALTER TABLE trades ALTER COLUMN account_password DROP NOT NULL;`);
-  await query(`ALTER TABLE trades ALTER COLUMN security_code DROP NOT NULL;`);
+  // Upgrade older trade schema - add manual payment columns if they don't exist
+  await query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS payment_qr_code TEXT;`);
+  await query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS payment_upi_id TEXT;`);
+  await query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS payment_instructions TEXT;`);
+  await query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS payment_reported_at TIMESTAMPTZ;`);
+  await query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS payment_reported_by TEXT;`);
+  await query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS riot_id TEXT;`);
+  await query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS riot_password TEXT;`);
+  await query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS credentials_submitted_at TIMESTAMPTZ;`);
+  await query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS seller_notified_at TIMESTAMPTZ;`);
+  await query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS buyer_confirmed_at TIMESTAMPTZ;`);
 
   const seededUsers = [
     {

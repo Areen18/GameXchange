@@ -41,14 +41,23 @@ CREATE TABLE IF NOT EXISTS trades (
   platform_fee INTEGER NOT NULL,
   total_amount INTEGER NOT NULL,
   status TEXT NOT NULL DEFAULT 'pending_payment',
-  payment_status TEXT NOT NULL DEFAULT 'pending',
-  payment_method TEXT,
-  payment_id TEXT,
-  payment_order_id TEXT,
-  payment_signature TEXT,
-  account_email TEXT,
-  account_password TEXT,
-  security_code TEXT,
+  
+  -- Manual Payment Fields
+  payment_qr_code TEXT,
+  payment_upi_id TEXT,
+  payment_instructions TEXT,
+  payment_reported_at TIMESTAMPTZ,
+  payment_reported_by TEXT,
+  
+  -- Riot Credentials (Plain text for manual system)
+  riot_id TEXT,
+  riot_password TEXT,
+  credentials_submitted_at TIMESTAMPTZ,
+  
+  -- Tracking
+  seller_notified_at TIMESTAMPTZ,
+  buyer_confirmed_at TIMESTAMPTZ,
+  
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

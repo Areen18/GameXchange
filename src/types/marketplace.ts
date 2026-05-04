@@ -38,12 +38,25 @@ export interface Trade {
   price: number;
   platform_fee: number;
   total_amount: number;
-  status: "pending_payment" | "payment_secured" | "awaiting_details" | "verify_access" | "completed" | "cancelled" | "disputed";
+  status: "pending_payment" | "payment_reported" | "credentials_shared" | "completed" | "cancelled";
   created_at: string;
   type: "buy" | "sell";
-  account_email: string;
-  account_password: string;
-  security_code: string;
+  
+  // Manual payment fields
+  payment_qr_code?: string;
+  payment_upi_id?: string;
+  payment_instructions?: string;
+  payment_reported_at?: string;
+  
+  // Credentials
+  riot_id?: string;
+  riot_password?: string;
+  credentials_submitted_at?: string;
+  
+  // For seller view
+  has_payment_info?: boolean;
+  has_credentials?: boolean;
+  
   buyer_name?: string;
   seller_name?: string;
 }
@@ -61,4 +74,7 @@ export interface CreateListingInput {
   deliveryEmail: string;
   deliveryPassword: string;
   deliveryCode?: string;
+  paymentQrCode?: string;
+  paymentUpiId?: string;
+  paymentInstructions?: string;
 }

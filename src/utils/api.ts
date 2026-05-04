@@ -51,21 +51,22 @@ async function refreshAccessToken(): Promise<string | null> {
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const token = getStoredToken();
-  const headers = new Headers(options.headers);
+  try {
+    const token = getStoredToken();
+    const headers = new Headers(options.headers);
 
-  if (!headers.has("Content-Type") && options.body) {
-    headers.set("Content-Type", "application/json");
-  }
+    if (!headers.has("Content-Type") && options.body) {
+      headers.set("Content-Type", "application/json");
+    }
 
-  if (token) {
-    headers.set("Authorization", `Bearer ${token}`);
-  }
+    if (token) {
+      headers.set("Authorization", `Bearer ${token}`);
+    }
 
-  let response = await fetch(`${API_BASE_URL}${path}`, {
-    ...options,
-    headers,
-  });
+    let response = await fetch(`${API_BASE_URL}${path}`, {
+      ...options,
+      headers,
+    });
 
   // Handle token expiration with automatic refresh
   if (response.status === 401) {
@@ -119,10 +120,30 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const data = text ? JSON.parse(text) : {};
 
   if (!response.ok) {
-    throw new Error(data.error || "Request failed");
+    const errorMessage = data.error || data.message || `Request failed with status ${response.status}`;
+    console.error('API Error:', {
+      url: `${API_BASE_URL}${path}`,
+      status: response.status,
+      statusText: response.statusText,
+      error: errorMessage,
+      data
+    });
+    throw new Error(errorMessage);
   }
 
   return data as T;
+  } catch (error) {
+    // Handle network errors
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      console.error('Network Error:', {
+        url: `${API_BASE_URL}${path}`,
+        message: 'Failed to connect to server. Make sure the backend is running.'
+      });
+      throw new Error('Cannot connect to server. Please check your connection.');
+    }
+    // Re-throw other errors
+    throw error;
+  }
 }
 
 export function storeToken(token: string, refreshToken: string, remember = true) {
@@ -234,32 +255,27 @@ export async function getTrades() {
 }
 
 export async function createTrade(accountId: string) {
-  return request<{ 
-    trade: Trade; 
-    paymentOrder: { 
-      id: string; 
-      amount: number; 
-      currency: string; 
-    } 
-  }>("/trades", {
+  return request<{ trade: Trade }>("/trades", {
     method: "POST",
     body: JSON.stringify({ accountId }),
   });
 }
 
-export async function verifyPayment(tradeId: string, paymentDetails: {
-  paymentId: string;
-  orderId: string;
-  signature: string;
-}) {
-  return request<{ success: boolean; message: string; trade: Partial<Trade> }>(`/trades/${tradeId}/verify-payment`, {
+export async function addPaymentInfo(tradeId: string, qrCode: string, upiId: string, instructions: string) {
+  return request<{ success: boolean; message: string }>(`/trades/${tradeId}/payment-info`, {
     method: "POST",
-    body: JSON.stringify(paymentDetails),
+    body: JSON.stringify({ qrCode, upiId, instructions }),
+  });
+}
+
+export async function reportPayment(tradeId: string) {
+  return request<{ success: boolean; message: string }>(`/trades/${tradeId}/report-payment`, {
+    method: "POST",
   });
 }
 
 export async function getPaymentConfig() {
-  return request<{ key: string; currency: string }>("/payment/config");
+  return request<{ manual_payment: boolean; currency: string }>("/payment/config");
 }
 
 export async function confirmTrade(tradeId: string) {
@@ -271,5 +287,12 @@ export async function confirmTrade(tradeId: string) {
 export async function cancelTrade(tradeId: string) {
   return request<{ success: boolean; message: string }>(`/trades/${tradeId}/cancel`, {
     method: "PATCH",
+  });
+}
+
+export async function submitCredentials(tradeId: string, riotId: string, riotPassword: string) {
+  return request<{ success: boolean; message: string; trade: Partial<Trade> }>(`/trades/${tradeId}/submit-credentials`, {
+    method: "POST",
+    body: JSON.stringify({ riotId, riotPassword }),
   });
 }

@@ -27,17 +27,20 @@ export function TradeDetailModal({ darkMode, trade, onClose, onConfirmReceived, 
   };
 
   const getStageStatus = (stage: number) => {
-    const currentStage = ['payment_secured', 'awaiting_details', 'verify_access', 'completed'].indexOf(trade.status);
-    if (stage < currentStage) return 'completed';
-    if (stage === currentStage) return 'active';
+    const statusOrder = ['pending_payment', 'awaiting_credentials', 'credentials_locked', 'verify_access', 'completed'];
+    const currentStageIndex = statusOrder.indexOf(trade.status);
+    
+    if (stage < currentStageIndex) return 'completed';
+    if (stage === currentStageIndex) return 'active';
     return 'pending';
   };
 
   const stages = [
-    { label: 'Payment Secured', description: 'Checkout has been recorded' },
-    { label: 'Delivery Ready', description: 'Stored handoff details are attached to this trade' },
-    { label: 'Buyer Confirms Access', description: 'Verify the account and confirm receipt' },
-    { label: 'Payment Released', description: 'Trade completed successfully' },
+    { label: 'Payment Secured', description: 'Buyer payment held in escrow' },
+    { label: 'Credentials Submitted', description: 'Seller submits Riot account credentials' },
+    { label: 'Credentials Locked', description: 'Credentials encrypted and secured' },
+    { label: 'Buyer Confirms Access', description: 'Buyer verifies account and confirms receipt' },
+    { label: 'Payment Released', description: 'Trade completed, payment released to seller' },
   ];
 
   const handleConfirm = async () => {
@@ -150,21 +153,74 @@ export function TradeDetailModal({ darkMode, trade, onClose, onConfirmReceived, 
                   <Shield className="text-purple-400" size={20} />
                   <h3 className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Account Credentials</h3>
                 </div>
-                <CredentialRow darkMode={darkMode} label="Email Address" value={trade.account_email} copied={copiedField === 'email'} onCopy={() => void copyToClipboard(trade.account_email, 'email')} />
-                <CredentialRow darkMode={darkMode} label="Password" value={trade.account_password} copied={copiedField === 'password'} onCopy={() => void copyToClipboard(trade.account_password, 'password')} />
-                <CredentialRow darkMode={darkMode} label="Security Code" value={trade.security_code} copied={copiedField === 'code'} onCopy={() => void copyToClipboard(trade.security_code, 'code')} />
-
-                {trade.status === 'verify_access' && (
-                  <div className={`mt-4 p-4 rounded-lg ${darkMode ? 'bg-yellow-500/10 border border-yellow-500/30' : 'bg-yellow-50 border border-yellow-300'}`}>
+                
+                {trade.status === 'awaiting_credentials' && trade.type === 'sell' ? (
+                  <div className={`p-4 rounded-lg ${darkMode ? 'bg-yellow-500/10 border border-yellow-500/30' : 'bg-yellow-50 border border-yellow-300'}`}>
                     <div className="flex gap-3">
                       <AlertTriangle className="text-yellow-400 flex-shrink-0" size={20} />
                       <div>
-                        <div className={`font-semibold text-sm mb-1 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Important: Verify Access</div>
+                        <div className={`font-semibold text-sm mb-1 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Action Required</div>
+                        <div className="text-xs text-gray-400 mb-3">
+                          The buyer has completed payment. Please submit the Riot account credentials to proceed with the trade.
+                        </div>
+                        <button
+                          onClick={onClose}
+                          className="px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold"
+                        >
+                          Submit Credentials
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : trade.status === 'credentials_locked' ? (
+                  <div className={`p-4 rounded-lg ${darkMode ? 'bg-cyan-500/10 border border-cyan-500/30' : 'bg-cyan-50 border border-cyan-300'}`}>
+                    <div className="flex gap-3">
+                      <Shield className="text-cyan-400 flex-shrink-0" size={20} />
+                      <div>
+                        <div className={`font-semibold text-sm mb-1 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Credentials Locked</div>
                         <div className="text-xs text-gray-400">
-                          Sign in with the delivered credentials, validate the listing, then confirm receipt to complete the escrow flow.
+                          Your credentials have been encrypted and secured. They will be released to the buyer after verification. Payment will be released to you once the buyer confirms access.
                         </div>
                       </div>
                     </div>
+                  </div>
+                ) : (trade.account_email || trade.riot_id) ? (
+                  <>
+                    {trade.account_email && (
+                      <>
+                        <CredentialRow darkMode={darkMode} label="Email Address" value={trade.account_email} copied={copiedField === 'email'} onCopy={() => void copyToClipboard(trade.account_email, 'email')} />
+                        <CredentialRow darkMode={darkMode} label="Password" value={trade.account_password} copied={copiedField === 'password'} onCopy={() => void copyToClipboard(trade.account_password, 'password')} />
+                        <CredentialRow darkMode={darkMode} label="Security Code" value={trade.security_code} copied={copiedField === 'code'} onCopy={() => void copyToClipboard(trade.security_code, 'code')} />
+                      </>
+                    )}
+                    
+                    {trade.riot_id && trade.type === 'sell' && (
+                      <>
+                        <div className="text-xs text-gray-400 mb-2 mt-4">Submitted Riot Credentials:</div>
+                        <CredentialRow darkMode={darkMode} label="Riot ID" value={trade.riot_id} copied={copiedField === 'riot_id'} onCopy={() => void copyToClipboard(trade.riot_id || '', 'riot_id')} />
+                        {trade.riot_password && (
+                          <CredentialRow darkMode={darkMode} label="Riot Password" value={trade.riot_password} copied={copiedField === 'riot_password'} onCopy={() => void copyToClipboard(trade.riot_password || '', 'riot_password')} />
+                        )}
+                      </>
+                    )}
+
+                    {trade.status === 'verify_access' && trade.type === 'buy' && (
+                      <div className={`mt-4 p-4 rounded-lg ${darkMode ? 'bg-yellow-500/10 border border-yellow-500/30' : 'bg-yellow-50 border border-yellow-300'}`}>
+                        <div className="flex gap-3">
+                          <AlertTriangle className="text-yellow-400 flex-shrink-0" size={20} />
+                          <div>
+                            <div className={`font-semibold text-sm mb-1 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Important: Verify Access</div>
+                            <div className="text-xs text-gray-400">
+                              Sign in with the delivered credentials, validate the listing, then confirm receipt to complete the escrow flow.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="text-center py-4 text-gray-400 text-sm">
+                    Credentials will be available once the seller submits them.
                   </div>
                 )}
               </div>

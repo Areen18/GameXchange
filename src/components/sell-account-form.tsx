@@ -24,6 +24,9 @@ export function SellAccountForm({ darkMode, onClose, onCreated }: SellAccountFor
     deliveryEmail: '',
     deliveryPassword: '',
     deliveryCode: '',
+    paymentQrCode: '',
+    paymentUpiId: '',
+    paymentInstructions: '',
     agreeTerms: false,
     confirmOwnership: false,
   });
@@ -42,11 +45,6 @@ export function SellAccountForm({ darkMode, onClose, onCreated }: SellAccountFor
 
     if (!formData.region || !formData.level || !formData.rank || !formData.price) {
       setError('Please fill in region, level, rank, and price before publishing.');
-      return;
-    }
-
-    if (!formData.deliveryEmail || !formData.deliveryPassword) {
-      setError('Transfer email and transfer password are required so the buyer can receive access.');
       return;
     }
 
@@ -71,6 +69,9 @@ export function SellAccountForm({ darkMode, onClose, onCreated }: SellAccountFor
         deliveryEmail: formData.deliveryEmail,
         deliveryPassword: formData.deliveryPassword,
         deliveryCode: formData.deliveryCode || undefined,
+        paymentQrCode: formData.paymentQrCode || undefined,
+        paymentUpiId: formData.paymentUpiId || undefined,
+        paymentInstructions: formData.paymentInstructions || undefined,
       });
 
       setSuccess('Listing published successfully. It is now live in the marketplace.');
@@ -240,21 +241,23 @@ export function SellAccountForm({ darkMode, onClose, onCreated }: SellAccountFor
             <div className="flex items-start gap-4">
               <Shield className={darkMode ? 'text-cyan-400 flex-shrink-0' : 'text-blue-600 flex-shrink-0'} size={32} />
               <div className="flex-1">
-                <h3 className={`text-xl font-semibold mb-2 ${darkMode ? 'text-cyan-400' : 'text-blue-600'}`}>Secure Delivery Details</h3>
+                <h3 className={`text-xl font-semibold mb-2 ${darkMode ? 'text-cyan-400' : 'text-blue-600'}`}>
+                  Secure Delivery Details <span className="text-sm font-normal text-gray-400">(Optional)</span>
+                </h3>
                 <p className={`text-sm mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                  These credentials are stored so the buyer can receive access after checkout. For a production launch, these should move into encrypted secret storage.
+                  These credentials can be stored so the buyer can receive access after checkout. You can also provide them later through the trade details page.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <input
                     value={formData.deliveryEmail}
                     onChange={(event) => updateField('deliveryEmail', event.target.value)}
-                    placeholder="Transfer email"
+                    placeholder="Transfer email (optional)"
                     className={`px-4 py-3 rounded-lg border outline-none ${darkMode ? 'bg-black/40 border-white/10 text-white focus:border-cyan-500' : 'bg-white border-gray-300 text-gray-900 focus:border-blue-600'}`}
                   />
                   <input
                     value={formData.deliveryPassword}
                     onChange={(event) => updateField('deliveryPassword', event.target.value)}
-                    placeholder="Transfer password"
+                    placeholder="Transfer password (optional)"
                     className={`px-4 py-3 rounded-lg border outline-none ${darkMode ? 'bg-black/40 border-white/10 text-white focus:border-cyan-500' : 'bg-white border-gray-300 text-gray-900 focus:border-blue-600'}`}
                   />
                   <input
@@ -263,6 +266,68 @@ export function SellAccountForm({ darkMode, onClose, onCreated }: SellAccountFor
                     placeholder="Security code (optional)"
                     className={`px-4 py-3 rounded-lg border outline-none ${darkMode ? 'bg-black/40 border-white/10 text-white focus:border-cyan-500' : 'bg-white border-gray-300 text-gray-900 focus:border-blue-600'}`}
                   />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className={`p-6 rounded-2xl border ${darkMode ? 'bg-gradient-to-br from-green-500/10 to-emerald-600/10 border-green-500/20' : 'bg-gradient-to-br from-green-500/10 to-emerald-600/10 border-green-500/20'}`}>
+            <div className="flex items-start gap-4">
+              <svg className={`${darkMode ? 'text-green-400' : 'text-green-600'} flex-shrink-0`} width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="2" y="5" width="20" height="14" rx="2"/>
+                <path d="M2 10h20"/>
+              </svg>
+              <div className="flex-1">
+                <h3 className={`text-xl font-semibold mb-2 ${darkMode ? 'text-green-400' : 'text-green-600'}`}>Payment Information</h3>
+                <p className={`text-sm mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  Provide your payment details so buyers can pay you directly. Add your UPI ID and/or payment QR code.
+                </p>
+                <div className="space-y-4">
+                  <div>
+                    <label className={`block text-sm mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      Payment QR Code (Image URL or Base64)
+                    </label>
+                    <input
+                      value={formData.paymentQrCode}
+                      onChange={(event) => updateField('paymentQrCode', event.target.value)}
+                      placeholder="https://example.com/qr-code.png or data:image/png;base64,..."
+                      className={`w-full px-4 py-3 rounded-lg border outline-none ${darkMode ? 'bg-black/40 border-white/10 text-white focus:border-cyan-500' : 'bg-white border-gray-300 text-gray-900 focus:border-blue-600'}`}
+                    />
+                    <p className="text-xs text-gray-400 mt-1">
+                      Provide a URL to your UPI QR code image or paste a base64 encoded image
+                    </p>
+                  </div>
+                  <div>
+                    <label className={`block text-sm mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      UPI ID
+                    </label>
+                    <input
+                      value={formData.paymentUpiId}
+                      onChange={(event) => updateField('paymentUpiId', event.target.value)}
+                      placeholder="yourname@upi"
+                      className={`w-full px-4 py-3 rounded-lg border outline-none ${darkMode ? 'bg-black/40 border-white/10 text-white focus:border-cyan-500' : 'bg-white border-gray-300 text-gray-900 focus:border-blue-600'}`}
+                    />
+                    <p className="text-xs text-gray-400 mt-1">
+                      Your UPI ID for receiving payments (e.g., yourname@paytm, yourname@phonepe)
+                    </p>
+                  </div>
+                  <div>
+                    <label className={`block text-sm mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      Payment Instructions (Optional)
+                    </label>
+                    <textarea
+                      value={formData.paymentInstructions}
+                      onChange={(event) => updateField('paymentInstructions', event.target.value)}
+                      placeholder="Any special instructions for the buyer regarding payment..."
+                      rows={3}
+                      className={`w-full px-4 py-3 rounded-lg border outline-none resize-none ${darkMode ? 'bg-black/40 border-white/10 text-white focus:border-cyan-500' : 'bg-white border-gray-300 text-gray-900 focus:border-blue-600'}`}
+                    />
+                  </div>
+                  <div className={`p-3 rounded-lg ${darkMode ? 'bg-yellow-500/10 border border-yellow-500/20' : 'bg-yellow-50 border border-yellow-300'}`}>
+                    <p className="text-xs text-yellow-600 dark:text-yellow-400">
+                      <strong>Note:</strong> At least one payment method (QR Code or UPI ID) is recommended so buyers can pay you immediately.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

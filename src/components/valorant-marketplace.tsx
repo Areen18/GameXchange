@@ -3,13 +3,13 @@ import { Moon, Sun, User, Shield, Settings, Wallet, ShoppingBag, HelpCircle, Log
 import { motion, AnimatePresence } from 'motion/react';
 import { SellAccountForm } from './sell-account-form';
 import { AccountDetailModal } from './account-detail-modal';
-import { CheckoutModal } from './checkout-modal';
 import { ActiveTrades } from './active-trades';
 import { ProfileDetailsModal } from './profile-details-modal';
 import { SettingsModal } from './settings-modal';
-import { TradeDetailModal } from './trade-detail-modal';
+import { ManualTradeDetailModal } from './manual-trade-detail-modal';
 import { WalletDetailsModal } from './wallet-details-modal';
-import { cancelTrade, confirmTrade, createTrade, getAccounts, getTrades } from '../utils/api';
+import { SellerCredentialsModal } from './seller-credentials-modal';
+import { cancelTrade, confirmTrade, createTrade, getAccounts, getTrades, submitCredentials, addPaymentInfo, reportPayment } from '../utils/api';
 import type { AccountListing, Trade, User as MarketplaceUser } from '../types/marketplace';
 import valoImage from 'figma:asset/f360f0a27c183a0e446740ac6f0a45404aad0dd6.png';
 
@@ -32,20 +32,18 @@ export function ValorantMarketplace({ darkMode, onToggleDarkMode, onLogout, user
   const [showWalletDetails, setShowWalletDetails] = useState(false);
   const [showActiveTrades, setShowActiveTrades] = useState(false);
   const [showAccountDetail, setShowAccountDetail] = useState(false);
-  const [showCheckout, setShowCheckout] = useState(false);
   const [showTradeDetail, setShowTradeDetail] = useState(false);
+  const [showSellerCredentials, setShowSellerCredentials] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<AccountListing | null>(null);
   const [selectedTrade, setSelectedTrade] = useState<Trade | null>(null);
   const [accounts, setAccounts] = useState<AccountListing[]>([]);
   const [trades, setTrades] = useState<Trade[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [isStartingCheckout, setIsStartingCheckout] = useState(false);
+  const [isStartingTrade, setIsStartingTrade] = useState(false);
   const [removingTradeId, setRemovingTradeId] = useState<string | null>(null);
   const [accountActionError, setAccountActionError] = useState('');
   const [error, setError] = useState('');
-  const [currentTradeId, setCurrentTradeId] = useState<string | null>(null);
-  const [paymentOrder, setPaymentOrder] = useState<{ id: string; amount: number; currency: string } | null>(null);
   const profileRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -122,15 +120,19 @@ export function ValorantMarketplace({ darkMode, onToggleDarkMode, onLogout, user
   const handleProceedToCheckout = async () => {
     if (!selectedAccount) return;
 
-    setIsStartingCheckout(true);
+    setIsStartingTrade(true);
     setAccountActionError('');
 
     try {
       const response = await createTrade(selectedAccount.id);
-      setCurrentTradeId(response.trade.id);
-      setPaymentOrder(response.paymentOrder);
       setShowAccountDetail(false);
-      setShowCheckout(true);
+      setShowActiveTrades(true);
+      
+      // Automatically open the trade detail
+      const newTrade = response.trade;
+      setSelectedTrade(newTrade);
+      setShowTradeDetail(true);
+      
       setError('');
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to create trade';
@@ -146,34 +148,40 @@ export function ValorantMarketplace({ darkMode, onToggleDarkMode, onLogout, user
 
       setError(message);
     } finally {
-      setIsStartingCheckout(false);
+      setIsStartingTrade(false);
     }
   };
 
-  const handlePaymentComplete = async () => {
-    await Promise.all([loadAccounts(), loadTrades()]);
-    setShowCheckout(false);
-    setSelectedAccount(null);
-    setCurrentTradeId(null);
-    setPaymentOrder(null);
+  const handleAddPaymentInfo = async (tradeId: string, qrCode: string, upiId: string, instructions: string) => {
+    await addPaymentInfo(tradeId, qrCode, upiId, instructions);
+    await loadTrades();
     
-    // Find and show the completed trade
-    if (currentTradeId) {
-      const trade = trades.find((t) => t.id === currentTradeId);
-      if (trade) {
-        setSelectedTrade(trade);
-        setShowTradeDetail(true);
-      }
+    // Update selected trade
+    const updatedTrade = trades.find((t) => t.id === tradeId);
+    if (updatedTrade) {
+      setSelectedTrade(updatedTrade);
     }
-    setShowActiveTrades(true);
   };
 
-  const handleViewTrade = (tradeId: string) => {
-    const trade = trades.find((entry) => entry.id === tradeId);
+  const handleReportPayment = async (tradeId: string) => {
+    await reportPayment(tradeId);
+    await loadTrades();
+    
+    // Update selected trade
+    const updatedTrade = trades.find((t) => t.id === tradeId);
+    if (updatedTrade) {
+      setSelectedTrade(updatedTrade);
+    }
+  };
 
-    if (trade) {
-      setSelectedTrade(trade);
-      setShowTradeDetail(true);
+  const handleSubmitCredentials = async (tradeId: string, riotId: string, riotPassword: string) => {
+    await submitCredentials(tradeId, riotId, riotPassword);
+    await loadTrades();
+    
+    // Update selected trade
+    const updatedTrade = trades.find((t) => t.id === tradeId);
+    if (updatedTrade) {
+      setSelectedTrade(updatedTrade);
     }
   };
 
@@ -184,6 +192,15 @@ export function ValorantMarketplace({ darkMode, onToggleDarkMode, onLogout, user
 
     if (completedTrade) {
       setSelectedTrade({ ...completedTrade, status: 'completed' });
+    }
+  };
+
+  const handleViewTrade = (tradeId: string) => {
+    const trade = trades.find((entry) => entry.id === tradeId);
+
+    if (trade) {
+      setSelectedTrade(trade);
+      setShowTradeDetail(true);
     }
   };
 
@@ -692,33 +709,17 @@ export function ValorantMarketplace({ darkMode, onToggleDarkMode, onLogout, user
         onProceedToCheckout={handleProceedToCheckout}
         open={showAccountDetail}
         error={accountActionError}
-        isLoading={isStartingCheckout}
+        isLoading={isStartingTrade}
       />
 
-      <CheckoutModal
-        darkMode={darkMode}
-        account={selectedAccount}
-        tradeId={currentTradeId || undefined}
-        paymentOrder={paymentOrder || undefined}
-        onClose={() => {
-          setShowCheckout(false);
-          setSelectedAccount(null);
-          setCurrentTradeId(null);
-          setPaymentOrder(null);
-        }}
-        onBack={() => {
-          setShowCheckout(false);
-          setShowAccountDetail(true);
-        }}
-        onPaymentComplete={handlePaymentComplete}
-        open={showCheckout}
-      />
-
-      <TradeDetailModal
+      <ManualTradeDetailModal
         darkMode={darkMode}
         trade={selectedTrade}
         onClose={() => setShowTradeDetail(false)}
         onConfirmReceived={handleConfirmReceived}
+        onAddPaymentInfo={handleAddPaymentInfo}
+        onReportPayment={handleReportPayment}
+        onSubmitCredentials={handleSubmitCredentials}
         open={showTradeDetail}
       />
 

@@ -14,19 +14,15 @@ export function ActiveTrades({ darkMode, trades, onViewTrade, onRemoveTrade, rem
   const getStatusInfo = (status: Trade['status']) => {
     switch (status) {
       case 'pending_payment':
-        return { label: 'Pending Payment', color: 'yellow', icon: Clock, description: 'Complete checkout to continue this trade' };
-      case 'payment_secured':
-        return { label: 'Payment Secured', color: 'cyan', icon: Shield, description: 'Your payment is held in escrow' };
-      case 'awaiting_details':
-        return { label: 'Awaiting Seller', color: 'yellow', icon: Clock, description: 'Waiting for seller details' };
-      case 'verify_access':
-        return { label: 'Verify Access', color: 'purple', icon: AlertCircle, description: 'Review delivered account credentials' };
+        return { label: 'Pending Payment', color: 'yellow', icon: Clock, description: 'Waiting for seller to provide payment details' };
+      case 'payment_reported':
+        return { label: 'Payment Reported', color: 'cyan', icon: Shield, description: 'Buyer has reported payment completion' };
+      case 'credentials_shared':
+        return { label: 'Credentials Shared', color: 'purple', icon: CheckCircle, description: 'Seller has shared account credentials' };
       case 'completed':
         return { label: 'Completed', color: 'green', icon: CheckCircle, description: 'Trade completed successfully' };
       case 'cancelled':
-        return { label: 'Cancelled', color: 'gray', icon: AlertCircle, description: 'This trade was removed before payment' };
-      case 'disputed':
-        return { label: 'Under Review', color: 'red', icon: AlertCircle, description: 'Support team is reviewing this trade' };
+        return { label: 'Cancelled', color: 'gray', icon: AlertCircle, description: 'This trade was cancelled' };
       default:
         return { label: 'Unknown', color: 'gray', icon: Clock, description: '' };
     }
