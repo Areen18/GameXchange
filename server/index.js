@@ -1059,3 +1059,7 @@ async function shutdown(signal) {
 
 process.on("SIGINT", () => void shutdown("SIGINT"));
 process.on("SIGTERM", () => void shutdown("SIGTERM"));
+
+app.get("/", (req, res) => {
+  res.send("GameXchange API is running 🚀");
+});
